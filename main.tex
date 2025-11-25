@@ -14,7 +14,9 @@
 
 \title{Trabajo práctico\\
 Ecuaciones Diferenciales Ordinarias\\Matemática Numérica}
-\author{Liz Cartaya Salabarría C211 \\ Lianet Tamarit Tejas C211\\Maya Ramón Castellanos C212}
+\author{Liz Cartaya Salabarría C211 
+\and Lianet Tamarit Tejas C211
+\and Maya Ramón Castellanos C212}
 \date{}
 
 \begin{document}
@@ -32,7 +34,7 @@ e interprete el patrón cualitativo. Indique, por ejemplo, cómo varían las pen
 
 \section*{Solución:}
 
-\section*{Modelo físico y planteo de la EDO}
+\subsection*{Modelo físico y planteo de la EDO}
 Partiendo de la Ley de Torricelli:
 \[ A(y) \frac{dy}{dt} = -a \sqrt{2gy} \]
 
@@ -42,14 +44,14 @@ Donde:
 \item $\frac{dy}{dt} = -C$ (queremos que la velocidad de bajada sea constante).
 \end{itemize}
 
-\section{Conversión de Unidades}
+\subsection{Conversión de Unidades}
 Procedemos a convertir los datos a $\text{ft/s}$ ya que la gravedad se encuentra en $\text{ft/s}^2$.
 
 Velocidad de bajada ($C$): $4 \text{ in/h}$.
 \[ C = \frac{4 \text{ ft}}{12 \text{ h}} = \frac{1}{3} \text{ ft/h} \]
 \[ C = \frac{1/3 \text{ ft}}{3600 \text{ s}} = \frac{1}{10800} \text{ ft/s} \]
 
-\section{Determinación de la Curva $y=f(x)$}
+\subsection{Determinación de la Curva $y=f(x)$}
 Sustituimos $A(y)=\pi x^2$, $a=\pi r^2$ y $dy/dt = -C$ en la ecuación diferencial:
 \[ \pi x^2 (-C) = -\pi r^2 \sqrt{2gy} \]
 
@@ -65,7 +67,7 @@ Cuando $x = 1 \text{ ft}$, $y = 4 \text{ ft}$.
 Por tanto:
 \[ \boxed{y = 4x^4} \]
 
-\section{Cálculo del Radio del Orificio ($r$)}
+\subsection{Cálculo del Radio del Orificio ($r$)}
 Regresamos a: 
 \[ \pi x^2 (-C) = -\pi r^2 \sqrt{2gy} \]
 
@@ -98,7 +100,7 @@ Radio del orificio:
 
 \section*{Parte A.2: Patrón cualitativo}
 
-\section*{Variación de la pendiente}
+\subsection*{Variación de la pendiente}
 Para $y>0$ la pendiente $m$ es siempre negativa, ya que $a,g,A(y)>0$. Esto indica que la altura $y$ disminuye con el tiempo.
 
 En $y=0$, la pendiente es cero, lo que corresponde a un estado de equilibrio. 
@@ -109,9 +111,10 @@ Si $A(y)$ crece con $y$ (tanque que se ensancha hacia arriba), el factor $1/A(y)
 
 Si $A(y)$ decrece con $y$ (tanque que se estrecha hacia arriba), la magnitud de la pendiente aumenta para $y$ grandes, haciéndolas más inclinadas.
 
-\section*{Papel de $A(y)$}
+\subsection*{Papel de $A(y)$}
 $A(y)$ modula la tasa de cambio de la altura. Un $A(y)$ grande reduce la velocidad de cambio de la altura y por tanto la pendiente, mientras que si $A(y)$ es pequeño la pendiente se amplifica.
 
+\clearpage
 \section*{Parte B}
 
 Para estudiar cambios de régimen en una variable escalar reducida $z(t)$ (p.ej., una "razón de vaciado adimensional" vinculada al diseño), considere la EDO con parámetro $\mu$:
@@ -124,7 +127,9 @@ Para estudiar cambios de régimen en una variable escalar reducida $z(t)$ (p.ej.
 
 3) Construya el diagrama de bifurcación en el plano $(\mu , z)$.
 Identifique el tipo de bifurcación. Comente, cualitativamente, qué implicaría para el vaciado que $\mu$ cruce el umbral crítico.
-\section*{1. Determinación de los Puntos de Equilibrio}
+
+\section*{Solución:}
+\subsection*{1. Determinación de los Puntos de Equilibrio}
 
 Los puntos de equilibrio, $z^*$, se obtienen igualando la velocidad de cambio a cero, $\frac{dz}{dt} = 0$:
 $$ \mu + z - z^2 = 0 $$
@@ -136,10 +141,7 @@ Los puntos de equilibrio en función de $\mu$ son:
 $$ z_{1,2}^*(\mu) = \frac{1 \pm \sqrt{1 + 4\mu}}{2} $$
 Para que existan puntos de equilibrio reales, el discriminante debe ser no negativo: $1 + 4\mu \geq 0$, lo que implica que la bifurcación ocurre en $\mu = -\frac{1}{4}$.
 
-\section*{2. Clasificación de la Estabilidad}
-
-
-
+\subsection*{2. Clasificación de la Estabilidad}
 \subsection*{Análisis de $z_1^*$ (Rama Inferior)}
 $$ z_1^* = \frac{1 - \sqrt{1 + 4\mu}}{2} $$
 Evaluando la derivada:
@@ -183,7 +185,7 @@ La variable $z(t)$ es la razón de vaciado adimensional y $\mu$ es un parámetro
 \end{itemize}
 
 
-
+\clearpage
 \section*{Parte C}
 
 Considere el siguiente sistema lineal numérico que idealiza la dinámica acoplada de dos "niveles" (o un nivel y un flujo linealizado) alrededor de un punto de operación:
