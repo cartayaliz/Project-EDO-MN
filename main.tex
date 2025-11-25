@@ -1,0 +1,222 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{graphicx}
+
+\numberwithin{equation}{section}
+
+\title{Trabajo pr\'actico\\
+Ecuaciones Diferenciales Ordinarias\\Matemática Numérica}
+\author{            Liz Cartaya Salabarría C211 \\  
+                     Lianet Tamarit Tejas C211\\
+                 Maya Ramón Castellanos C212                                    
+                 }
+\date{}
+\begin{document}
+\maketitle
+
+\section*{Parte A}
+1) Un reloj de agua de 12 horas se diseña con las dimensiones que se muestran en la figura 1.4.10, dada la forma de la superficie obtenida al girar la curva y f(x) alrededor del eje y. ¿Cuál debe ser esta curva, y qué radio debe tener el orificio circular del fondo para que el nivel del agua caiga a una velocidad constante de 4 pulgadas por hora in/h? 
+
+2) Dibuje el campo de isoclinas asociado al modelo general de Torricelli:
+
+$$ \frac{dy}{dt} =  \frac{-a}{A(y)}\sqrt{2gy}$$
+e interprete el patr\´on cualitativo. Indique, por ejemplo, c\´omo var\´ıan las pendientes con \textit{y} y qu\´e papel juega A(y).
+\section*{Solución:}
+
+\section*{Modelo f\'isico y planteo de la EDO}
+Partiendo de la Ley de Torricelli:
+$$A(y) \frac{dy}{dt} = -a \sqrt{2gy}$$
+
+Donde:
+$A(y) = \pi x^2$  es el área de la superficie del agua a la altura $y$.
+$a = \pi r^2$ es el área del orificio de salida (donde $r$ es el radio que buscamos).
+$g = 32 \text{ ft/s}^2$ es la aceleración de la gravedad.$\frac{dy}{dt} = -C$ (queremos que la velocidad de bajada sea constante).
+
+\section*{Solución exacta de la EDO:}
+
+\section{Conversión de Unidades}
+
+Procedemos a convertir los datos a  $\text{ft/s}$  ya que la gravedad se encuentra en $\text{ft/s}^2$
+Velocidad de bajada ($C$):  $4 \text{ in/h}$.$$C = \frac{4 \text{ ft}}{12 \text{ h}} = \frac{1}{3} \text{ ft/h}$$$$C = \frac{1/3 \text{ ft}}{3600 \text{ s}} = \frac{1}{10800} \text{ ft/s}$$
+
+\section{Determinación de la Curva $y=f(x)$}
+Sustituimos $A(y)=\pi x^2$, $a=\pi r^2$ y $dy/dt = -C$ en la ecuación diferencial:$$\pi x^2 (-C) = -\pi r^2 \sqrt{2gy}$$Simplificamos $\pi$ y los signos negativos y obtenemos:$$x^2 C = r^2 \sqrt{2g} \sqrt{y} \implies x^2 = \left( \frac{r^2 \sqrt{2g}}{C} \right) \sqrt{y}$$Esto indica que $x^2$ es proporcional a $\sqrt{y}$, por lo que elevando al cuadrado, la forma de la curva es $y = k x^4$ donde k es una constante $$ k =( \frac{r^2 \sqrt{2g}}{C} ) $$
+Usando las condiciones de frontera del borde superior podemos hallar la constante específica:
+Cuando $x = 1 \text{ ft}$, $y = 4 \text{ ft}$.$$4 = k(1)^4 \implies k=4$$
+Por tanto:
+\[
+\boxed{y = 4x^4}
+\]
+
+\section{Cálculo del Radio del Orificio ($r$)}
+Regresamos a: 
+$$\pi x^2 (-C) = -\pi r^2 \sqrt{2gy}$$
+Conocemos todos los datos excepto el radio. Para obtenr el valor de r sustituimos todos los datos conocidos:
+$$\pi (1)^2 \cdot \left(\frac{1}{10800}\right) = \pi r^2 \cdot \sqrt{2(32)(4)}$$
+Cancelamos $\pi$ y calculamos la raíz:
+$$\frac{1}{10800} = r^2 \sqrt{256}$$$$\frac{1}{10800} = r^2 (16)$$
+Despejamos r:
+$$r^2 = \frac{1}{16 \cdot 10800} = \frac{1}{172800} \text{ ft}^2$$
+
+
+Finalmente obtenemos:
+                                              $r = \sqrt{1/172800}$
+
+Multiplicamos numerador y denominador de la fracción dentro de la raíz por 3 (un truco aritmético para obtener una raíz exacta en el denominador):$$r = \sqrt{\frac{1}{172800}} = \sqrt{\frac{1 \cdot 3}{172800 \cdot 3}} = \sqrt{\frac{3}{518400}}$$Calculamos la raíz cuadrada del denominador ($\sqrt{518400} = 720$):
+\[
+\boxed{r = \frac{\sqrt{3}}{720} \text{ ft}}
+\]
+\section*{Resumen}
+Modelo: Ley de Torricelli
+\[
+\boxed{dV/dt = -a\sqrt{2gy}}
+\]
+Curva del tanque: \[
+\boxed{y = 4 x^4}
+\]
+Radio del orificio: \[
+\boxed{r = \frac{\sqrt{3}}{720} \text{ ft}}
+\]
+
+2) \section*{Patrón cualitativo:}
+
+
+\section*{Variación de la pendiente}
+
+Para \textit{y}>0  la pendiente \textit{m} es siempre negativa, ya que a,g,A(y)>0. Esto indica que la altura \textit{y} disminuye con el tiempo.
+
+En \textit{y}=0, la pendiente es cero, lo que corresponde a un estado de equilibrio. 
+
+Si A(\textit{y}) es constante (tanque cilíndrico), m= \alpha \textit{y}. 
+
+Así que, a mayor \textit{y}, la pendiente es más negativa, es decir, más inclinada hacia abajo.
+
+Si A(\textit{y}) crece con \textit{y} (tanque que se ensancha hacia arriba), el factor 1/\textit{A}(\textit{y}) reduce la magnitud de la pendiente para \textit{y} grandes, haciendo las pendientes menos inclinadas.
+
+Si A(\textit{y}) decrece con \textit{y} (tanque que se estrecha hacia arriba), la magnitud de la pendiente aumenta para \textit{y} grandes, haciéndolas más inclinadas.
+
+\section*{Papel de A(y)}
+
+A(\textit{y}) modula la tasa de cambio de la altura. Un A(\textit{y}) grande reduce la altura y por tanto la pendiente, mientras que si A(\textit{y}) es pequeño la pendiente se amplifica.
+
+
+
+\section*{Parte B}
+
+Para estudiar cambios de r\´egimen en una variable escalar reducida
+ z(t) (p.ej., una “raz\´on de vaciado adimensional” vinculada al diseño), considere la EDO con par\´ametro \mu:
+ $$ \frac{dy}{dt} =  \mu + z - z^2 $$
+
+
+1) Determine los puntos de equilibrio en funci\´on de \mu
+
+2)Clasifique su estabilidad mediante $$ z ^\prime = 1 - 2z $$
+ 
+3) Construya el diagrama de bifurcación en el plano (\mu , z)
+
+Identifique el tipo de bifurcación
+ 
+Comente, cualitativamente, qu\´e implicar\´ıa para el vaciado que \mu  cruce el umbral cr\´ıtico. 
+ 
+
+
+
+\section*{Parte C}
+
+Considere el siguiente sistema lineal num\´erico que idealiza la din\´amica acoplada de dos “niveles” (o un nivel y un flujo linealizado) alrededor de un punto de operaci\´on:
+\[ \frac{\partial x}{\partial t} = -3x + y \]
+\[ \frac{\partial y}{\partial t} = -4x - 2y \]
+1) Calcule los puntos cr\´ıticos y clasif\´ıquelos (tipo y estabilidad). 
+
+2) Verif\´ıquelo construyendo el plano de fase y explique brevemente el significado f\´ısico de las trayectorias en el contexto de niveles/flujo acoplados 
+
+\section*{Solución:}
+1) En un sistema acoplado de dos niveles tenemos dos componentes 
+que interactúan entre sí tal que la evolución de cada uno depende no solo 
+de sí mismo sino también del estado del otro nivel. Por ejemplo, 
+dado que estamos analizando ley de Toricelli en un reloj de agua, dos tanques de agua interconectados. Las perturbaciones de un sistema afectarán al otro, y también pueden tener cambios individuales. Enfocado en el sistema con el que estamos tratando, la función puede tener dos variables donde $x(t)$ es el nivel de agua del tanque nº1
+y $y(t)$, nivel de agua en el tanque nº2, y para ella el modelamiento matemático sería:
+
+\[ \frac{\partial x}{\partial t} = a_{11}x + a_{12}y \]
+\[ \frac{\partial y}{\partial t} = a_{21}x + a_{22}y \]
+
+$a_{11}$ y $a_{22}$ serían el efecto del nivel 1 y 2 sobre sí mismos respectivamente y $a_{12}$, $a_{21}$ el del acoplamiento entre niveles.
+
+El sistema dado es:
+
+\[ \frac{\partial x}{\partial t} = -3x + y \]
+\[ \frac{\partial y}{\partial t} = -4x - 2y \]
+Para hallar sus puntos críticos, igualamos las dervidas a 0:
+\[
+\begin{align*}
+&-3x + y = 0 \\
+&y = 3x 
+$\text{   ecuación 1}$ \\
+&-4x - 2y = 0 
+$\text{   ecuación 2}$\\
+& $\text{sustituir 1 en 2}$\\
+&-4x - 2(3x) = 0 \\
+&-4x - 6x) = 0 \\
+&-10x = 0 \\
+& x = 0 \\
+\end{align*}
+\]
+Encontrar $y$ sustituyendo $x = 0$ en 1:
+\[y = 3 \cdot 0 = 0\]
+Entonces el punto crítico es (0,0). Para clasificarlo, hallamos los valores propios y analizamos traza y determinante:
+
+\[
+t = -3 + (-2) = -5
+\]
+\[
+D = 6 + 4 = 10
+\]
+
+\[
+(-5)^2 < 4 \cdot 10\]
+\[
+25 < 40
+\]
+
+
+Hallar valores propios: 
+\[
+( -3 - \lambda )( -2 - \lambda ) + 4 = 6 + 3\lambda + 2\lambda + \lambda^2 + 4 = \lambda^2 + 5\lambda + 10
+\]
+
+\[
+\lambda = \frac{-5 \pm \sqrt{25 - 4 \cdot 10}}{2}
+\]
+
+\[
+= \frac{-5 \pm \sqrt{-15}}{2}
+\]
+
+\[
+\lambda = \frac{-5 \pm i\sqrt{15}}{2}
+\]
+
+\[
+\frac{-5}{2} < 0 \quad \text{(Parte real negativa)}
+\]
+
+Por tanto $(0,0)$ es un foco estable espiral
+
+Estabilidad asintótica: todas las trayectorias convergen al origen,
+no importa la perturbación inicial, regresa al equilibrio
+
+2) Confirmar el resultado mediante la construcción del plano de fase.
+El plano de fase es una especia de mapa con las posibles trayectorias del sistema. Los puntos críticos serán hacia donde las flechas que representan el movimiento converjan o diverjan.
+
+Resultados observados en el plano de fase adjunto:
+Las flechas giran en espiral hacia el centro y las trayectorias terminan en (0,0), el origen, confirmando la convergencia y estabilidad.
+
+La interpretación física es que los cambios en los niveles producen oscilaciones amortiguadas donde el sistema se autocorrige y se termina estabilizando. Ocurre un intercambio donde el exceso en un elemento se transfiere al otro, redistribuyéndose. Por tanto, tras cualquier perturbación en los niveles, estos eventualmente regresan al equilibrio.
+
+
+\end{document}
