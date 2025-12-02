@@ -244,4 +244,81 @@ Las flechas giran en espiral hacia el centro y las trayectorias terminan en $(0,
 
 La interpretación física es que los cambios en los niveles producen oscilaciones amortiguadas donde el sistema se autocorrige y se termina estabilizando. Ocurre un intercambio donde el exceso en un elemento se transfiere al otro, redistribuyéndose. Por tanto, tras cualquier perturbación en los niveles, estos eventualmente regresan al equilibrio.
 
+\clearpage
+\clearpage
+\section*{Parte D: Análisis Numérico y Validación}
+
+El objetivo de esta sección es validar la EDO, implementar y comparar los métodos numéricos de Euler Explícito y Euler Mejorado, y realizar el análisis de error y sensibilidad del problema.
+
+\subsection*{1. Simulación y Validación del Reloj de Agua}
+
+Para el problema asignado (Tema 5: Clepsydra), el diseño de la curva del tanque $y = 4x^4$ fue determinado específicamente para que la velocidad de vaciado $\frac{dy}{dt}$ fuera constante.
+
+\begin{itemize}
+    \item Se utiliza la función original $\texttt{f\_clepsydra}$ en los métodos numéricos.
+    \item La gráfica resultante muestra una \textbf{línea recta perfecta} desde $y(0)=4 \text{ ft}$ hasta $y(\tau)=0$, donde $\tau$ es el tiempo de vaciado.
+\end{itemize}
+
+Esta solución lineal valida que el diseño teórico del reloj de agua es correcto, ya que el nivel del agua desciende a una velocidad constante de $4 \text{ in/h}$.
+
+\begin{figure}[h!]
+    \centering
+    % INSERTAR: Gráfica de la simulación del vaciado (línea recta)
+    \caption{Simulación del vaciado del Reloj de Agua (Clepsydra) usando Euler Mejorado. Se observa la disminución lineal de la altura $y(t)$.}
+\end{figure}
+
+\subsection*{2. Análisis de Error, Convergencia y Costo Computacional}
+
+Dado que la solución exacta de la Clepsydra es lineal, el error global de los métodos de Euler Explícito y Mejorado tiende a ser cero. Para cumplir con el requisito de validar el \textbf{orden de convergencia} de los algoritmos, utilizamos un \textbf{problema de referencia (Benchmark)}: el vaciado de un tanque cilíndrico, cuya EDO no es lineal y sí produce errores medibles.
+
+\subsubsection*{Tabla Comparativa de Algoritmos}
+
+La siguiente tabla resume el rendimiento, el costo computacional y el orden de convergencia, obtenido tras simular el Benchmark cilíndrico con pasos de tiempo ($\Delta t$) decrecientes.
+
+\begin{figure}[h!]
+    \centering
+    % INSERTAR: La tabla comparativa final generada por la consola de Python.
+    \caption{Tabla Comparativa de Métodos Numéricos (Error y Orden obtenidos usando Benchmark Cilíndrico).}
+\end{figure}
+
+\subsubsection*{Orden de Convergencia (Gráfica Log-Log)}
+
+El código prueba varios $\Delta t$ (pasos de tiempo). En la gráfica log-log del error absoluto vs $\Delta t$:
+\begin{itemize}
+    \item La pendiente de la curva del \textbf{Euler Explícito} es cercana a 1, confirmando su \textbf{Orden 1} de convergencia.
+    \item La pendiente de la curva del \textbf{Euler Mejorado} es cercana a 2, confirmando su \textbf{Orden 2} de convergencia.
+    \item Esto demuestra que Euler Mejorado es significativamente más preciso, ya que su error disminuye cuadráticamente con la reducción de $\Delta t$.
+\end{itemize}
+
+\begin{figure}[h!]
+    \centering
+    % INSERTAR: Gráfica Log-Log de la convergencia.
+    \caption{Gráfica Log-Log de la convergencia para el Benchmark Cilíndrico. La pendiente del método de Orden 2 (Euler Mejorado) es visiblemente más pronunciada.}
+\end{figure}
+
+\subsection*{3. Análisis de Sensibilidad (Error Hacia Adelante)}
+
+Este análisis evalúa la \textbf{condición del problema}, es decir, qué tan sensible es la solución final a pequeñas perturbaciones en los datos iniciales.
+
+\begin{itemize}
+    \item Se simula el vaciado del tanque con la altura inicial nominal ($y_0 = 4.0 \text{ ft}$) y una pequeña perturbación ($y_0 = 4.1 \text{ ft}$).
+    \item La gráfica muestra la \textbf{diferencia absoluta} entre ambas trayectorias.
+\end{itemize}
+
+La observación de que la diferencia no se dispara exponencialmente hacia el infinito significa que el problema es \textbf{estable ante errores de medición} de la condición inicial (está bien condicionado).
+
+\begin{figure}[h!]
+    \centering
+    % INSERTAR: Gráfica triple de Sensibilidad (y Estabilidad).
+    \caption{Análisis de Sensibilidad (Condición Inicial y Parámetros) y Estabilidad (Pasos Grandes).}
+\end{figure}
+
+\subsection*{4. Análisis de Estabilidad del Algoritmo (Error Hacia Atrás)}
+
+Este análisis evalúa la robustez del algoritmo (estabilidad) al usar pasos de tiempo ($\Delta t$) exageradamente grandes. Se demuestra que:
+
+\begin{itemize}
+    \item \textbf{Euler Explícito} (Orden 1) es inestable y la solución numérica puede divergir o dar resultados físicamente imposibles al usar un $\Delta t$ muy grande.
+    \item \textbf{Euler Mejorado} (Orden 2) mantiene mejor su estabilidad o precisión incluso con pasos grandes, confirmando que es un algoritmo más robusto para este tipo de EDOs.
+\end{itemize}
 \end{document}
