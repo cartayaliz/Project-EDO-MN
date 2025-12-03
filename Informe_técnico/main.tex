@@ -1,6 +1,5 @@
-
 %===================================================================================
-% 
+%
 %===================================================================================
 \documentclass[a4paper,10pt,twocolumn]{article}
 
@@ -24,7 +23,7 @@
 	    urlcolor=blue}
 
 %===================================================================================
-% 
+%
 %-----------------------------------------------------------------------------------
 \title{Trabajo práctico: Ecuaciones Diferenciales Ordinarias y Matemática Numérica}
 
@@ -38,10 +37,11 @@
 }
 
 \tutors{
-Prof. Tutor de Ecuaciones Diferenciales \\
-Prof. Tutor de Matemática Numérica}
+     \name Prof. Tutor de Ecuaciones Diferenciales \AND
+     \name Prof. Tutor de Matemática Numérica
+}
 
-\jcematcomheading{\the\year}{1-\pageref{end}}{L. Cartaya, L. Tamarit, M. Ramón}
+%\jcematcomheading{\the\year}{1-\pageref{end}}{L. Cartaya, L. Tamarit, M. Ramón}
 
 \ShortHeadings{EDO y Matemática Numérica}{Cartaya, Tamarit, Ramón}
 %===================================================================================
@@ -72,7 +72,7 @@ Ley de Torricelli, Clepsydra, Ecuaciones Diferenciales, Bifurcación, Plano de F
 Ecuaciones Diferenciales Ordinarias, Matemática Numérica
 \end{topics}
 
-\vspace{0.8cm}
+\vspace{0.5cm}
 ]
 
 %===================================================================================
@@ -81,7 +81,9 @@ Ecuaciones Diferenciales Ordinarias, Matemática Numérica
 
 \section{Parte A}
 
-1) Un reloj de agua de 12 horas se diseña con las dimensiones que se muestran en la figura 1.4.10, dada la forma de la superficie obtenida al girar la curva $y = f(x)$ alrededor del eje $y$. ¿Cuál debe ser esta curva, y qué radio debe tener el orificio circular del fondo para que el nivel del agua caiga a una velocidad constante de 4 pulgadas por hora (in/h)?
+1) Un reloj de agua de 12 horas se diseña con las dimensiones que se muestran en la figura 1, dada la forma de la superficie obtenida al girar la curva $y = f(x)$ alrededor del eje $y$. ¿Cuál debe ser esta curva, y qué radio debe tener el orificio circular del fondo para que el nivel del agua caiga a una velocidad constante de 4 pulgadas por hora (in/h)?
+
+\includegraphics[width=0.4\textwidth]{Fig 1 Clepsydra.png}
 
 2) Dibuje el campo de isoclinas asociado al modelo general de Torricelli:
 
@@ -226,6 +228,14 @@ r = \frac{\sqrt{3}}{720} \text{ ft}
 
 \subsubsection{Parte A.2: Patrón cualitativo}
 
+\includegraphics[width=0.5\textwidth]{Campo de Isoclinas #1 parte A.png}
+\textbf Campo de Isoclinas (Tanque Cilíndrico)
+\includegraphics[width=0.5\textwidth]{Campo de Isoclinas #2 parte A.png}
+\textbf Campo de Isoclinas (Tanque que Ensancha)
+\includegraphics[width=0.5\textwidth]{Campo de Isoclinas #3 parte A.png}
+\textbf Campo de Isoclinas (Tanque que Estrecha)
+
+
 \textbf{Variación de la pendiente}
 
 Para $y > 0$ la pendiente $m$ es siempre negativa, ya que $a, g, A(y) > 0$. Esto indica que la altura $y$ disminuye con el tiempo.
@@ -305,7 +315,8 @@ El código prueba varios $\Delta t$ (pasos de tiempo). En la gráfica log-log de
 
 - Esto demuestra que Euler Mejorado es significativamente más preciso, ya que su error disminuye cuadráticamente con la reducción de $\Delta t$.
 
-\includegraphics[width=0.5\textwidth]{convergencia.png}
+\includegraphics[width=0.45\textwidth]{convergencia.png}
+
 \textbf{Figura 4:} Gráfica Log-Log de la convergencia para el Benchmark Cilíndrico. La pendiente del método de Orden 2 (Euler Mejorado) es visiblemente más pronunciada.
 
 \subsection{3. Análisis de Sensibilidad (Error Hacia Adelante)}
@@ -330,8 +341,10 @@ Este análisis evalúa la robustez del algoritmo (estabilidad) al usar pasos de 
 
 - \textbf{Euler Mejorado} (Orden 2) mantiene mejor su estabilidad o precisión incluso con pasos grandes, confirmando que es un algoritmo más robusto para este tipo de EDOs.
 
+\subsection{Resumen}:
+ En resumen estamos en presencia de un problema bien planteado, pues tiene una solución única que depende continuamente de los datos de entrada; y bien condicionado, ya que es estable ante errores de medición en la condición inicial
 \subsection{ Resumen de la aplicación de las EDO en el estudio de la ley de Toricelli}
-La ley de Torricelli establece que la razón de cambio respecto del tiempo de un volumen V de agua en un tanque de drenado es proporcional a la raíz cuadrada de la profundidad y del agua en el tanque: dV/dt =−k√y donde k es una constante, $k =a \sqrt{2g}$
+La ley de Torricelli establece que la razón de cambio respecto del tiempo de un volumen V de agua en un tanque de drenado es proporcional a la raíz cuadrada de la profundidad y del agua en el tanque: $dV/dt =-k\sqrt{y}$ donde k es una constante, $k =a \sqrt{2g}$
 Matemáticamente, el volumen del tanque depende de su forma. Si $A(y)$ es el área de la superficie del agua a la 
 altura $$y: V(y) = \int_0^y A(u)du$$
 Por el Teorema Fundamental del Cálculo, la derivada del volumen respecto a la altura es simplemente el área: $\frac{dV}{dy} = A(y)$.
@@ -340,9 +353,9 @@ Despejando $\frac{dy}{dt}$, llegamos a la forma estándar de una EDO de primer o
 Esta es una EDO no lineal separable.
 Este, constituye un modelo matemático para describir el vaciado de un tanque de agua bajo la fuerza de la gravedad y es un ejemplo clásico de aplicación de EDO de primer orden separables.
 
-El ejemplo #8 ilustra la teoría resolviendo un problema de drenaje de un tanque semiesférico con un valor inicial específico. Este ejemplo es fundamental porque demuestra cómo una EDO no lineal (debido al término $\sqrt{y}$) surge de un problema físico real.
+El ejemplo 8 ilustra la teoría resolviendo un problema de drenaje de un tanque semiesférico con un valor inicial específico. Este ejemplo es fundamental porque demuestra cómo una EDO no lineal (debido al término $\sqrt{y}$) surge de un problema físico real.
 
-En resumen la Ley de Torricelli aplica las Ecuaciones Diferenciales Ordinarias para modelar la dinámica de fluidos relacionando la tasa de cambio de la altura del líquido ($\frac{dy}{dt}$) con la geometría del contenedor ($A(y)$) y la gravedad. Se establece una ecuación de balance $\frac{dV}{dt}_{físico}$$ = \frac{dV}{dt}_{geométrico}$ que resulta en una EDO de primer orden no lineal, la cual permite calcular el tiempo de vaciado exacto para geometrías conocidas o aproximado mediante métodos numéricos para tanques irregulares
+En resumen la Ley de Torricelli aplica las Ecuaciones Diferenciales Ordinarias para modelar la dinámica de fluidos relacionando la tasa de cambio de la altura del líquido $\frac{dy}{dt}$ con la geometría del contenedor $A(y)$ y la gravedad. Se establece una ecuación de balance $\frac{dV}{dt}_{físico} = \frac{dV}{dt}_{geométrico}$ que resulta en una EDO de primer orden no lineal, la cual permite calcular el tiempo de vaciado exacto para geometrías conocidas o aproximado mediante métodos numéricos para tanques irregulares.
 
 \label{end}
 %===================================================================================
@@ -551,6 +564,7 @@ Como la parte real es negativa (Re$(\lambda) = -2.5 < 0$), el punto $(0,0)$ es u
 
 Confirmar el resultado mediante la construcción del plano de fase. El plano de fase es una especie de mapa con las posibles trayectorias del sistema. Los puntos críticos serán hacia donde las flechas que representan el movimiento converjan o diverjan.
 
+\includegraphics[width=0.5\textwidth]{Plano de Fase.png}
 \textbf{Resultados observados en el plano de fase:} Las flechas giran en espiral hacia el centro y las trayectorias terminan en $(0,0)$, el origen, confirmando la convergencia y estabilidad.
 
 La interpretación física es que los cambios en los niveles producen oscilaciones amortiguadas donde el sistema se autocorrige y se termina estabilizando. Ocurre un intercambio donde el exceso en un elemento se transfiere al otro, redistribuyéndose. Por tanto, tras cualquier perturbación en los niveles, estos eventualmente regresan al equilibrio.
