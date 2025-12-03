@@ -1,0 +1,560 @@
+
+%===================================================================================
+% 
+%===================================================================================
+\documentclass[a4paper,10pt,twocolumn]{article}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{jcematcom}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage[pdftex]{hyperref}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{graphicx}
+
+\hypersetup{colorlinks,%
+	    citecolor=black,%
+	    filecolor=black,%
+	    linkcolor=black,%
+	    urlcolor=blue}
+
+%===================================================================================
+% 
+%-----------------------------------------------------------------------------------
+\title{Trabajo práctico: Ecuaciones Diferenciales Ordinarias y Matemática Numérica}
+
+\author{
+\name Liz Cartaya Salabarría \email C211
+	\\ \addr Facultad de Matemática y Computación, Universidad de La Habana \AND
+\name Lianet Tamarit Tejas \email C211
+  \\ \addr Facultad de Matemática y Computación, Universidad de La Habana \AND
+\name Maya Ramón Castellanos \email C212
+  \\ \addr Facultad de Matemática y Computación, Universidad de La Habana
+}
+
+\tutors{
+Prof. Tutor de Ecuaciones Diferenciales \\
+Prof. Tutor de Matemática Numérica}
+
+\jcematcomheading{\the\year}{1-\pageref{end}}{L. Cartaya, L. Tamarit, M. Ramón}
+
+\ShortHeadings{EDO y Matemática Numérica}{Cartaya, Tamarit, Ramón}
+%===================================================================================
+
+\begin{document}
+
+\twocolumn[
+
+\maketitle
+
+\selectlanguage{spanish}
+
+\begin{abstract}
+Este trabajo presenta el análisis completo del Tema 5: Ley de Torricelli. Se resuelve el problema de diseño de una clepsydra (reloj de agua) que debe vaciarse a velocidad constante de 4 pulgadas por hora. Se determina la curva del tanque $y = 4x^4$ y el radio del orificio $r = \sqrt{3}/720$ ft. Se analiza el campo de isoclinas, se estudia la bifurcación del modelo reducido $dz/dt = \mu + z - z^2$, y se analiza un sistema acoplado lineal. Además, se implementan métodos numéricos para validar la solución.
+\end{abstract}
+
+\vspace{0.5cm}
+
+\begin{enabstract}
+This work presents a complete analysis of Topic 5: Torricelli's Law. The design problem of a clepsydra (water clock) that must empty at a constant rate of 4 inches per hour is solved. The tank curve $y = 4x^4$ and the orifice radius $r = \sqrt{3}/720$ ft are determined. The isocline field is analyzed, the bifurcation of the reduced model $dz/dt = \mu + z - z^2$ is studied, and a coupled linear system is analyzed. Additionally, numerical methods are implemented to validate the solution.
+\end{enabstract}
+
+\begin{keywords}
+Ley de Torricelli, Clepsydra, Ecuaciones Diferenciales, Bifurcación, Plano de Fase, Métodos Numéricos
+\end{keywords}
+
+\begin{topics}
+Ecuaciones Diferenciales Ordinarias, Matemática Numérica
+\end{topics}
+
+\vspace{0.8cm}
+]
+
+%===================================================================================
+% 
+%===================================================================================
+
+\section{Parte A}
+
+1) Un reloj de agua de 12 horas se diseña con las dimensiones que se muestran en la figura 1.4.10, dada la forma de la superficie obtenida al girar la curva $y = f(x)$ alrededor del eje $y$. ¿Cuál debe ser esta curva, y qué radio debe tener el orificio circular del fondo para que el nivel del agua caiga a una velocidad constante de 4 pulgadas por hora (in/h)?
+
+2) Dibuje el campo de isoclinas asociado al modelo general de Torricelli:
+
+\[
+\frac{dy}{dt} = -\frac{a}{A(y)}\sqrt{2gy}
+\]
+
+e interprete el patrón cualitativo. Indique, por ejemplo, cómo varían las pendientes con $y$ y qué papel juega $A(y)$.
+
+\subsection{Solución:}
+
+\subsubsection{Modelo físico y planteo de la EDO}
+
+Partiendo de la Ley de Torricelli:
+
+\[
+A(y)\frac{dy}{dt} = -a\sqrt{2gy}
+\]
+
+Donde:
+
+$A(y) = \pi x^2$ es el área de la superficie del agua a la altura $y$.
+
+$a = \pi r^2$ es el área del orificio de salida (donde $r$ es el radio que buscamos).
+
+$g = 32$ ft/s$^2$ es la aceleración de la gravedad.
+
+$\frac{dy}{dt} = -C$ (queremos que la velocidad de bajada sea constante).
+
+\subsubsection{Conversión de Unidades}
+
+Procedemos a convertir los datos a ft/s ya que la gravedad se encuentra en ft/s$^2$.  
+Velocidad de bajada (C): 4 in/h.
+
+\[
+C = \frac{4 \text{ ft}}{12 \text{ h}} = \frac{1}{3} \text{ ft/h}
+\]
+
+\[
+C = \frac{1/3 \text{ ft}}{3600 \text{ s}} = \frac{1}{10800} \text{ ft/s}
+\]
+
+\subsubsection{Determinación de la Curva $y = f(x)$}
+
+Sustituimos $A(y) = \pi x^2$, $a = \pi r^2$ y $dy/dt = -C$ en la ecuación diferencial:
+
+\[
+\pi x^2 (-C) = -\pi r^2 \sqrt{2gy}
+\]
+
+Simplificamos $\pi$ y los signos negativos y obtenemos:
+
+\[
+x^2 C = r^2 \sqrt{2g} \sqrt{y} \implies x^2 = \left( \frac{r^2 \sqrt{2g}}{C} \right) \sqrt{y}
+\]
+
+Esto indica que $x^2$ es proporcional a $\sqrt{y}$, por lo que elevando al cuadrado, la forma de la curva es $y = kx^4$ donde $k$ es una constante:
+
+\[
+k = \left( \frac{r^2 \sqrt{2g}}{C} \right)
+\]
+
+Usando las condiciones de frontera del borde superior podemos hallar la constante específica: Cuando $x = 1$ ft, $y = 4$ ft.
+
+\[
+4 = k(1)^4 \implies k = 4
+\]
+
+Por tanto:
+
+\[
+\boxed{y = 4x^4}
+\]
+
+\subsubsection{Cálculo del Radio del Orificio ($r$)}
+
+Regresamos a:
+
+\[
+\pi x^2 (-C) = -\pi r^2 \sqrt{2gy}
+\]
+
+Conocemos todos los datos excepto el radio. Para obtener el valor de $r$ sustituimos todos los datos conocidos:
+
+\[
+\pi (1)^2 \cdot \left( \frac{1}{10800} \right) = \pi r^2 \cdot \sqrt{2(32)(4)}
+\]
+
+Cancelamos $\pi$ y calculamos la raíz:
+
+\[
+\frac{1}{10800} = r^2 \sqrt{256}
+\]
+
+\[
+\frac{1}{10800} = r^2(16)
+\]
+
+Despejamos $r$:
+
+\[
+r^2 = \frac{1}{16 \cdot 10800} = \frac{1}{172800} \text{ ft}^2
+\]
+
+Finalmente obtenemos:
+
+\[
+r = \sqrt{1/172800}
+\]
+
+Multiplicamos numerador y denominador de la fracción dentro de la raíz por 3 (un truco aritmético para obtener una raíz exacta en el denominador):
+
+\[
+r = \sqrt{\frac{1}{172800}} = \sqrt{\frac{1 \cdot 3}{172800 \cdot 3}} = \sqrt{\frac{3}{518400}}
+\]
+
+Calculamos la raíz cuadrada del denominador ($\sqrt{518400} = 720$):
+
+\[
+r = \frac{\sqrt{3}}{720} \text{ ft}
+\]
+
+\subsubsection{Resumen}
+
+Modelo: Ley de Torricelli
+
+\[
+\frac{dV}{dt} = -a\sqrt{2gy}
+\]
+
+Curva del tanque:
+
+\[
+y = 4x^4
+\]
+
+Radio del orificio:
+
+\[
+r = \frac{\sqrt{3}}{720} \text{ ft}
+\]
+
+\subsubsection{Parte A.2: Patrón cualitativo}
+
+\textbf{Variación de la pendiente}
+
+Para $y > 0$ la pendiente $m$ es siempre negativa, ya que $a, g, A(y) > 0$. Esto indica que la altura $y$ disminuye con el tiempo.
+
+En $y = 0$, la pendiente es cero, lo que corresponde a un estado de equilibrio.
+
+Si $A(y)$ es constante (tanque cilíndrico), $m \propto \sqrt{y}$. Así que, a mayor $y$, la pendiente es más negativa, es decir, más inclinada hacia abajo.
+
+Si $A(y)$ crece con $y$ (tanque que se ensancha hacia arriba), el factor $1/A(y)$ reduce la magnitud de la pendiente para $y$ grandes, haciendo las pendientes menos inclinadas.
+
+Si $A(y)$ decrece con $y$ (tanque que se estrecha hacia arriba), la magnitud de la pendiente aumenta para $y$ grandes, haciéndolas más inclinadas.
+
+\textbf{Papel de A(y)}
+
+$A(y)$ modula la tasa de cambio de la altura. Un $A(y)$ grande reduce la velocidad de cambio de la altura y por tanto la pendiente, mientras que si $A(y)$ es pequeño la pendiente se amplifica.
+%===================================================================================
+
+\section{Análisis Numérico y Validación}
+
+El objetivo de esta sección es validar la EDO, implementar y comparar los métodos numéricos de Euler Explícito y Euler Mejorado, y realizar el análisis de error y sensibilidad del problema.
+
+\subsection{1. Simulación y Validación del Reloj de Agua}
+
+Para el problema asignado (Tema 5: Clepsydra), el diseño de la curva del tanque $y = 4x^4$ fue determinado específicamente para que la velocidad de vaciado $dy/dt$ fuera constante.
+
+Se utiliza la función original $f_{\text{clepsydra}}$ en los métodos numéricos.
+
+La gráfica resultante muestra una línea recta perfecta desde $y(0) = 4$ ft hasta $y(\tau) = 0$, donde $\tau$ es el tiempo de vaciado.
+
+Esta solución lineal valida que el diseño teórico del reloj de agua es correcto, ya que el nivel del agua desciende a una velocidad constante de 4 in/h.
+\includegraphics[width=0.5\textwidth]{simulacion del relojt.png}
+\textbf{Figura 2:} Simulación del vaciado del Reloj de Agua (Clepsydra) usando Euler Mejorado. Se observa la disminución lineal de la altura $y(t)$.
+
+\subsection{2. Análisis de Error, Convergencia y Costo Computacional}
+
+Dado que la solución exacta de la Clepsydra es lineal, el error global de los métodos de Euler Explícito y Mejorado tiende a ser cero. Para cumplir con el requisito de validar el orden \textbf{de convergencia de los algoritmos}, utilizamos un problema de referencia (Benchmark): el vaciado de un tanque cilíndrico, cuya EDO no es lineal y sí produce errores medibles.
+
+\textbf{Tabla Comparativa de Algoritmos}
+
+La siguiente tabla resume el rendimiento, el costo computacional y el orden de convergencia, obtenido tras simular el Benchmark cilíndrico con pasos de tiempo ($\Delta t$) decrecientes.
+
+\begin{table}[h!]
+    \centering
+    \label{tab:errores_benchmark}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        % Encabezados de la tabla
+        \textbf{dt} & \textbf{Error Euler} & \textbf{Error Mejorado} \\
+        \hline
+        % Fila de datos 1
+        200 & 0.000027 & 0.000000 \\
+        \hline
+        % Fila de datos 2
+        100 & 0.000014 & 0.000000 \\
+        \hline
+        % Fila de datos 3
+        50 & 0.000007 & 0.000000 \\
+        \hline
+        % Fila de datos 4
+        10 & 0.000001 & 0.000000 \\
+        \hline
+        % Fila de datos 5
+        1 & 0.000000 & 0.000000 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Figura 3:} Tabla Comparativa de Métodos Numéricos (Error obtenido usando Benchmark Cilíndrico).
+
+\textbf{Orden de Convergencia (Gráfica Log-Log)}
+
+El código prueba varios $\Delta t$ (pasos de tiempo). En la gráfica log-log del error absoluto vs $\Delta t$:
+
+- La pendiente de la curva del Euler Explícito es cercana a 1, confirmando su \textbf{Orden 1 de convergencia}.
+
+- La pendiente de la curva del \textbf{Euler Mejorado} es cercana a 2, confirmando su \textbf{Orden 2} de convergencia.
+
+- Esto demuestra que Euler Mejorado es significativamente más preciso, ya que su error disminuye cuadráticamente con la reducción de $\Delta t$.
+
+\includegraphics[width=0.5\textwidth]{convergencia.png}
+\textbf{Figura 4:} Gráfica Log-Log de la convergencia para el Benchmark Cilíndrico. La pendiente del método de Orden 2 (Euler Mejorado) es visiblemente más pronunciada.
+
+\subsection{3. Análisis de Sensibilidad (Error Hacia Adelante)}
+
+Este análisis evalúa la \textbf{condición del problema}, es decir, qué tan sensible es la solución final a pequeñas perturbaciones en los datos iniciales.
+
+- Se simula el vaciado del tanque con la altura inicial nominal ($y_0 = 4.0$ ft) y una pequeña perturbación ($y_0 = 4.1$ ft).
+
+- La gráfica muestra la \textbf{diferencia absoluta} entre ambas trayectorias.
+
+La observación de que la diferencia no se dispara exponencialmente hacia el infinito significa que el problema es \textbf{estable ante errores de medición} de la condición inicial (está bien condicionado).
+
+\includegraphics[width=0.4\textwidth]{estabilidad.png}
+
+\textbf{  Figura 5:} Análisis de Sensibilidad (Condición Inicial y Parámetros) y Estabilidad (Pasos Grandes).
+
+\subsection{4. Análisis de Estabilidad del Algoritmo (Error Hacia Atrás)}
+
+Este análisis evalúa la robustez del algoritmo (estabilidad) al usar pasos de tiempo ($\Delta t$) exageradamente grandes. Se demuestra que:
+
+- \textbf{Euler Explícito} (Orden 1) es inestable y la solución numérica puede divergir o dar resultados físicamente imposibles al usar un $\Delta t$ muy grande.
+
+- \textbf{Euler Mejorado} (Orden 2) mantiene mejor su estabilidad o precisión incluso con pasos grandes, confirmando que es un algoritmo más robusto para este tipo de EDOs.
+
+\subsection{ Resumen de la aplicación de las EDO en el estudio de la ley de Toricelli}
+La ley de Torricelli establece que la razón de cambio respecto del tiempo de un volumen V de agua en un tanque de drenado es proporcional a la raíz cuadrada de la profundidad y del agua en el tanque: dV/dt =−k√y donde k es una constante, $k =a \sqrt{2g}$
+Matemáticamente, el volumen del tanque depende de su forma. Si $A(y)$ es el área de la superficie del agua a la 
+altura $$y: V(y) = \int_0^y A(u)du$$
+Por el Teorema Fundamental del Cálculo, la derivada del volumen respecto a la altura es simplemente el área: $\frac{dV}{dy} = A(y)$.
+Al igualar la ecuación física con la geométrica, obtenemos el modelo matemático final:$$A(y) \frac{dy}{dt} = -a \sqrt{2gy}$$
+Despejando $\frac{dy}{dt}$, llegamos a la forma estándar de una EDO de primer orden:$$\frac{dy}{dt} = -\frac{a \sqrt{2g}}{A(y)} \sqrt{y}$$
+Esta es una EDO no lineal separable.
+Este, constituye un modelo matemático para describir el vaciado de un tanque de agua bajo la fuerza de la gravedad y es un ejemplo clásico de aplicación de EDO de primer orden separables.
+
+El ejemplo #8 ilustra la teoría resolviendo un problema de drenaje de un tanque semiesférico con un valor inicial específico. Este ejemplo es fundamental porque demuestra cómo una EDO no lineal (debido al término $\sqrt{y}$) surge de un problema físico real.
+
+En resumen la Ley de Torricelli aplica las Ecuaciones Diferenciales Ordinarias para modelar la dinámica de fluidos relacionando la tasa de cambio de la altura del líquido ($\frac{dy}{dt}$) con la geometría del contenedor ($A(y)$) y la gravedad. Se establece una ecuación de balance $\frac{dV}{dt}_{físico}$$ = \frac{dV}{dt}_{geométrico}$ que resulta en una EDO de primer orden no lineal, la cual permite calcular el tiempo de vaciado exacto para geometrías conocidas o aproximado mediante métodos numéricos para tanques irregulares
+
+\label{end}
+%===================================================================================
+
+\section{Parte B}
+
+Para estudiar cambios de régimen en una variable escalar reducida $z(t)$ (p.ej., una "razón de vaciado adimensional" vinculada al diseño), considere la EDO con parámetro $\mu$:
+
+\[
+\frac{dz}{dt} = \mu + z - z^2
+\]
+
+1) Determine los puntos de equilibrio en función de $\mu$.
+
+2) Clasifique su estabilidad mediante:
+
+\[
+z' = 1 - 2z
+\]
+
+3) Construya el diagrama de bifurcación en el plano $(\mu, z)$. Identifique el tipo de bifurcación. Comente, cualitativamente, qué implicaría para el vaciado que $\mu$ cruce el umbral crítico.
+
+\subsection{Solución:}
+
+\subsubsection{1. Determinación de los Puntos de Equilibrio}
+
+Los puntos de equilibrio, $z^*$, se obtienen igualando la velocidad de cambio a cero, $\frac{dz}{dt} = 0$:
+
+\[
+\mu + z - z^2 = 0
+\]
+
+Reordenando a la forma cuadrática $az^2 + bz + c = 0$:
+
+\[
+z^2 - z - \mu = 0
+\]
+
+Aplicando la fórmula general para la solución de ecuaciones cuadráticas:
+
+\[
+z^* = \frac{-(1) \pm \sqrt{(-1)^2 - 4(1)(-\mu)}}{2(1)}
+\]
+
+Los puntos de equilibrio en función de $\mu$ son:
+
+\[
+z_{1,2}^*(\mu) = \frac{1 \pm \sqrt{1 + 4\mu}}{2}
+\]
+
+Para que existan puntos de equilibrio reales, el discriminante debe ser no negativo: $1 + 4\mu \geq 0$, lo que implica que la bifurcación ocurre en $\mu = -\frac{1}{4}$.
+
+\subsubsection{2. Clasificación de la Estabilidad}
+
+\textbf{Análisis de $z_1^*$ (Rama Inferior)}
+
+\[
+z_1^* = \frac{1 - \sqrt{1 + 4\mu}}{2}
+\]
+
+Evaluando la derivada:
+
+\[
+f'(z_1^*) = 1 - 2\left(\frac{1 - \sqrt{1 + 4\mu}}{2}\right)
+\]
+\[ 
+= 1 - (1 - \sqrt{1 + 4\mu}) 
+\]
+\[
+= \sqrt{1 + 4\mu}
+\]
+
+
+Para $\mu > -\frac{1}{4}$, $\sqrt{1 + 4\mu} > 0$. Por lo tanto, $z_1^*$ es \textbf{inestable} (repulsor).
+
+\textbf{Análisis de $z_2^*$ (Rama Superior)}
+
+\[
+z_2^* = \frac{1 + \sqrt{1 + 4\mu}}{2}
+\]
+
+Evaluando la derivada:
+
+\[
+f'(z_2^*) = 1 - 2\left(\frac{1 + \sqrt{1 + 4\mu}}{2}\right) = 1 - (1 + \sqrt{1 + 4\mu}) = -\sqrt{1 + 4\mu}
+\]
+
+Para $\mu > -\frac{1}{4}$, $-\sqrt{1 + 4\mu} < 0$. Por lo tanto, $z_2^*$ es \textbf{asintóticamente estable} (atractor).
+
+\subsubsection{3. Diagrama de Bifurcación y Tipo}
+
+\textbf{Tipo de Bifurcación}
+\includegraphics[width=0.5\textwidth]{grafico parte b.png}
+Según la forma de aparición/desaparición de equilibrios:
+
+- Dos equilibrios (uno estable y otro inestable) nacen o se destruyen en un punto.
+- Ocurre cuando el discriminante se anula y $f$, junto con su derivada son cero al mismo tiempo.
+
+Esa es la definición típica de una bifurcación nodo silla.
+
+\textbf{Implicación Cualitativa para el Vaciado}
+
+La variable $z(t)$ es la razón de vaciado adimensional y $\mu$ es un parámetro de diseño.
+
+- Si $\mu < -\frac{1}{4}$: el tanque se vacía completamente (no hay equilibrio).
+- Si $\mu = -\frac{1}{4}$: hay un cambio de régimen (bifurcación).
+- Si $\mu > -\frac{1}{4}$: puede alcanzarse un nivel estable de líquido (equilibrio).
+
+%===================================================================================
+
+\section{Parte C}
+
+Considere el siguiente sistema lineal numérico que idealiza la dinámica acoplada de dos "niveles" (o un nivel y un flujo linealizado) alrededor de un punto de operación:
+
+\[
+\frac{dx}{dt} = -3x + y
+\]
+\[
+\frac{dy}{dt} = -4x - 2y
+\]
+
+1) Calcule los puntos críticos y clasifíquelos (tipo y estabilidad).
+2) Verifíquelo construyendo el plano de fase y explique brevemente el significado físico de las trayectorias en el contexto de niveles/flujo acoplados.
+
+\subsection{Solución Parte C:}
+
+\subsubsection{1) Puntos Críticos y Clasificación}
+
+En un sistema acoplado de dos niveles tenemos dos componentes que interactúan entre sí tal que la evolución de cada uno depende no solo de sí mismo sino también del estado del otro nivel. El sistema dado es:
+
+\[
+\frac{dx}{dt} = -3x + y
+\]
+\[
+\frac{dy}{dt} = -4x - 2y
+\]
+
+Para hallar sus puntos críticos, igualamos las derivadas a 0:
+
+\[
+-3x + y = 0 \quad (\text{ecuación 1})
+\]
+\[
+y = 3x
+\]
+\[
+-4x - 2y = 0 \quad (\text{ecuación 2})
+\]
+
+Sustituimos 1 en 2:
+
+\[
+-4x - 2(3x) = 0
+\]
+\[
+-4x - 6x = 0
+\]
+\[
+-10x = 0
+\]
+\[
+x = 0
+\]
+
+Encontrar $y$ sustituyendo $x = 0$ en la ecuación 1:
+
+\[
+y = 3 \cdot 0 = 0
+\]
+
+Entonces el punto crítico es $(0, 0)$. Para clasificarlo, hallamos los valores propios y analizamos traza y determinante:
+
+\[
+\text{Traza } \tau = -3 + (-2) = -5
+\]
+\[
+\text{Det } \Delta = (-3)(-2) - (1)(-4) = 6 + 4 = 10
+\]
+
+Discriminante:
+
+\[
+\tau^2 - 4\Delta = (-5)^2 - 4(10) = 25 - 40 = -15
+\]
+
+Como $\tau^2 < 4\Delta$, los valores propios son complejos. Hallar valores propios:
+
+\[
+\lambda^2 - \tau\lambda + \Delta = 0
+\]
+\[
+\lambda^2 + 5\lambda + 10 = 0
+\]
+\[
+\lambda = \frac{-5 \pm \sqrt{25 - 40}}{2} = \frac{-5 \pm \sqrt{-15}}{2}
+\]
+\[
+\lambda = \frac{-5}{2} \pm i\frac{\sqrt{15}}{2}
+\]
+
+Como la parte real es negativa (Re$(\lambda) = -2.5 < 0$), el punto $(0,0)$ es un \textbf{foco estable}.
+
+\textbf{Estabilidad asintótica:} todas las trayectorias convergen al origen; no importa la perturbación inicial, el sistema regresa al equilibrio.
+
+\subsubsection{2) Plano de Fase y Significado Físico}
+
+Confirmar el resultado mediante la construcción del plano de fase. El plano de fase es una especie de mapa con las posibles trayectorias del sistema. Los puntos críticos serán hacia donde las flechas que representan el movimiento converjan o diverjan.
+
+\textbf{Resultados observados en el plano de fase:} Las flechas giran en espiral hacia el centro y las trayectorias terminan en $(0,0)$, el origen, confirmando la convergencia y estabilidad.
+
+La interpretación física es que los cambios en los niveles producen oscilaciones amortiguadas donde el sistema se autocorrige y se termina estabilizando. Ocurre un intercambio donde el exceso en un elemento se transfiere al otro, redistribuyéndose. Por tanto, tras cualquier perturbación en los niveles, estos eventualmente regresan al equilibrio.
+
+
+
+\end{document}
